@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+body
+{
+	/* Path relative to the html file that uses it */
+	behavior: url(libraries/XXX/1/clientSide/logic/js/XXX_DOM_Ready_internetExplorer.htc);
+}
