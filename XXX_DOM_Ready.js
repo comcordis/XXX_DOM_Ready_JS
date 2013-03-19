@@ -17,7 +17,7 @@ var XXX_DOM_Ready =
 		{
 			XXX_DOM_Ready.initialized = true;
 			
-			alert('ready');
+			//alert('ready');
 			
 			for (var i = 0, iEnd = XXX_DOM_Ready.eventListeners.length; i < iEnd; ++i)
 			{
