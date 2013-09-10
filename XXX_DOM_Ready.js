@@ -10,8 +10,24 @@ var XXX_DOM_Ready =
 	
 	eventListeners: [],
 	
-	ready: function ()
+	definedReadyBy: '',
+	
+	ready: function (definedReadyBy)
 	{
+		if (definedReadyBy)
+		{
+			this.definedReadyBy = definedReadyBy;
+			
+			if (XXX_JS)
+			{
+				XXX_JS.errorNotification(1, 'Defined ready by: ' + this.definedReadyBy);
+			}
+		}
+		else
+		{
+			XXX_JS.errorNotification(1, 'Defined ready by unknown source');
+		}
+		
 		// Used XXX_DOM_Ready instead of this, due to cross-browser this within events mess...
 		if (!XXX_DOM_Ready.initialized)
 		{
@@ -19,6 +35,8 @@ var XXX_DOM_Ready =
 			
 			//alert('ready');
 			
+			XXX_JS.errorNotification(1, 'Triggering DOM ready for eventListeners');
+				
 			for (var i = 0, iEnd = XXX_DOM_Ready.eventListeners.length; i < iEnd; ++i)
 			{
 				var eventListener = XXX_DOM_Ready.eventListeners[i];
@@ -34,10 +52,13 @@ var XXX_DOM_Ready =
 	{
 		if (XXX_DOM_Ready.initialized)
 		{
+			XXX_JS.errorNotification(1, 'Already DOM ready for eventListener');
+			
 			eventListener();
 		}
 		else
 		{		
+			XXX_JS.errorNotification(1, 'DOM not ready yet, adding event listener');
 			XXX_DOM_Ready.eventListeners.push(eventListener);
 		}
 	}
@@ -46,15 +67,15 @@ var XXX_DOM_Ready =
 /* For Mozilla and newer versions of Opera 9+ */
 if (document.addEventListener)
 {
-	document.addEventListener('DOMContentLoaded', XXX_DOM_Ready.ready, false);
+	document.addEventListener('DOMContentLoaded', function () { XXX_DOM_Ready.ready('document.addEventListener DOMContentLoaded'); }, false);
 	
 	// Fail safe
-	window.addEventListener('load', XXX_DOM_Ready.ready, false);
+	window.addEventListener('load', function () { XXX_DOM_Ready.ready('windows.addEventListener load'); }, false);
 }
 
 if (window.attachEvent)
 {
-	window.attachEvent('onload', XXX_DOM_Ready.ready);
+	window.attachEvent('onload', function () { XXX_DOM_Ready.ready('window.attachEvent onload'); });
 }
 			
 // Internet Explorer (using proprietary conditional comments)
@@ -68,7 +89,7 @@ if (window.attachEvent)
 		{
 			if (this.readyState === 'complete')
 			{
-				XXX_DOM_Ready.ready();
+				XXX_DOM_Ready.ready('script.onreadystatechange');
 			}
 		};
 	/*@end
@@ -84,7 +105,7 @@ if (/*@cc_on!@*/false)
 		{
 			test.doScroll('left');
 			
-			XXX_DOM_Ready.ready();
+			XXX_DOM_Ready.ready('doc:rdy');
 			
 			test = null;
 		}
@@ -104,7 +125,7 @@ if (/WebKit/i.test(navigator.userAgent))
 		{
 			clearInterval(XXX_DOM_Ready.scriptReadyTimer);
 			
-			XXX_DOM_Ready.ready();
+			XXX_DOM_Ready.ready('webkit document.readyState');
 		}
 	}, 100);
 }
@@ -118,16 +139,16 @@ else
 		{
 			clearInterval(XXX_DOM_Ready.scriptReadyTimer);
 			
-			XXX_DOM_Ready.ready();
+			XXX_DOM_Ready.ready('typeof');
 		}
 		else if (XXX_DOM_Ready.IE_LOADED)
 		{
 			clearInterval(XXX_DOM_Ready.scriptReadyTimer);
 			
-			XXX_DOM_Ready.ready();
+			XXX_DOM_Ready.ready('IE_LOADED');
 		}
 	}, 100);
 }
 
 /* Other browsers */
-window.onload = XXX_DOM_Ready;
+window.onload = function () { XXX_DOM_Ready.ready('window.onload'); };
