@@ -12,20 +12,19 @@ var XXX_DOM_Ready =
 	
 	definedReadyBy: '',
 	
+	notifications: [],
+	
 	ready: function (definedReadyBy)
 	{
 		if (definedReadyBy)
 		{
 			this.definedReadyBy = definedReadyBy;
 			
-			if (XXX_JS)
-			{
-				XXX_JS.errorNotification(1, 'Defined ready by: ' + this.definedReadyBy);
-			}
+			this.notifications.push('Defined ready by: ' + this.definedReadyBy);
 		}
 		else
 		{
-			XXX_JS.errorNotification(1, 'Defined ready by unknown source');
+			this.notifications.push('Defined ready by unknown source');
 		}
 		
 		// Used XXX_DOM_Ready instead of this, due to cross-browser this within events mess...
@@ -35,7 +34,7 @@ var XXX_DOM_Ready =
 			
 			//alert('ready');
 			
-			XXX_JS.errorNotification(1, 'Triggering DOM ready for eventListeners');
+			this.notifications.push('Triggering DOM ready for eventListeners');
 				
 			for (var i = 0, iEnd = XXX_DOM_Ready.eventListeners.length; i < iEnd; ++i)
 			{
@@ -52,13 +51,13 @@ var XXX_DOM_Ready =
 	{
 		if (XXX_DOM_Ready.initialized)
 		{
-			XXX_JS.errorNotification(1, 'Already DOM ready for eventListener');
+			this.notifications.push('Already DOM ready for eventListener');
 			
 			eventListener();
 		}
 		else
 		{		
-			XXX_JS.errorNotification(1, 'DOM not ready yet, adding event listener');
+			this.notifications.push('DOM not ready yet, adding event listener');
 			XXX_DOM_Ready.eventListeners.push(eventListener);
 		}
 	}
