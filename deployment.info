@@ -1,0 +1,6 @@
+project:XXX_DOM_Ready_JS
+deployEnvironment:development
+checkout:master
+commitHash:fe2722e9d3fff3b93fe73935ec2c1173976a44bf
+timestamp:2015-04-13T09:44:11Z
+deployer:operations
